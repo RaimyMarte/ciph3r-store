@@ -1,32 +1,16 @@
 import { defineStore } from 'pinia';
 import api from '../utils/api';
+import { IProduct } from '../interfaces/product';
 
 
 export const useProductStore = defineStore('products', {
     state: () => ({
-        products: [
-            {
-                "description": "",
-                "id": "pair_9ef9f060777041f7bc5ec1cf36b1e683",
-                "name": "name",
-                "value": "Product K"
-            }
-        ],
-        categories: [          {
-            "description": "",
-            "id": "pair_9ef9f060777041f7bc5ec1cf36b1e683",
-            "name": "name",
-            "value": "Product K"
-    }],
+
     }),
     actions: {
         async fetchProducts() {
-            const { data } = await api.get('/me');
-                // const { data } = await api.get('/products');
-                console.log({ data })
-                this.products = data;
-            
-
+            const { data: response } = await api.get('/shop?page=2');
+            return response?.data as IProduct[];
         },
         async fetchCategories() {
             console.log('first')

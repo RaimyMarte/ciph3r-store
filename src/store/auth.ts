@@ -60,9 +60,12 @@ export const useAuthStore = defineStore('auth', {
 
     },
 
-    logout() {
+    async logout() {
+      await api.post('/logout');
+
       this.user = null;
       this.token = null;
+      Cookies.remove('token')
       delete api.defaults.headers.common['Authorization'];
     },
   },
