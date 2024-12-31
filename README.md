@@ -1,18 +1,37 @@
 # Vue 3 + TypeScript + Vite
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+Este es un proyecto realizado en **Vue 3** y **TypeScript**, utilizando **Vuetify** para el diseño de la interfaz de usuario. Está configurado con **Vite** para un entorno de desarrollo rápido y eficiente.
 
-## Recommended IDE Setup
+## Requisitos
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+- [Node.js](https://nodejs.org/) (recomendado: LTS)
+- [npm](https://www.npmjs.com/)
 
-## Type Support For `.vue` Imports in TS
+## Instrucciones de instalación
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
+### 1. Clonar el repositorio
 
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
+Primero, clona el repositorio en tu máquina local:
 
-1. Disable the built-in TypeScript Extension
-   1. Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-   2. Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
+git clone https://github.com/RaimyMarte/ciph3r-store
+
+cd ciph3r-store
+
+### 2. Instalar las dependencias
+Instala las dependencias necesarias utilizando npm o yarn:
+
+npm install
+
+Esto instalará todos los paquetes listados en el archivo package.json.
+
+### 3. Configuración de entorno
+Asegúrate de tener un archivo .env en la raíz de tu proyecto. Este archivo debe contener las siguientes variables de entorno, según tu configuración:
+
+VITE_API_BASE_URL=https://api.takeit.ciph3r.co/api/v1
+
+### 4. Iniciar el servidor
+Para iniciar el servidor de desarrollo, utiliza el siguiente comando:
+
+npm run dev
+
+Esto ejecutará el servidor en el puerto configurado por Vite (por defecto, http://localhost:5173).

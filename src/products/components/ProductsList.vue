@@ -15,6 +15,11 @@
         <ProductCard :product="product" />
       </v-col>
     </v-row>
+
+    <v-row class="mt-4" justify="center">
+      <v-pagination v-model="currentPage" :length="totalPages" circle :total-visible="5"
+        @update:modelValue="handlePageChange" />
+    </v-row>
   </v-container>
 </template>
 
@@ -29,10 +34,13 @@ export default defineComponent({
   components: { Loading, ProductCard, },
   setup() {
     const productStore = useProductStore();
+    const currentPage = computed(() => productStore.currentPage);
+    const totalPages = computed(() => productStore.totalPages);
     const products = computed(() => productStore.filtersActive ? productStore.filteredProducts : productStore.products)
     const loading = ref(true);
 
-    onMounted(async () => {
+    const getProducts = async () => {
+      loading.value = true;
       try {
         await productStore.fetchProducts();
       } catch (error) {
@@ -41,9 +49,19 @@ export default defineComponent({
       } finally {
         loading.value = false;
       }
-    });
+    }
+
+    onMounted(async () => getProducts());
+
+    const handlePageChange = (page: number) => {
+      productStore.currentPage = page;
+      getProducts()
+    };
 
     return {
+      handlePageChange,
+      currentPage,
+      totalPages,
       products,
       loading,
     };

@@ -14,13 +14,19 @@ export const useProductStore = defineStore('products', {
         filteredProducts: [] as IProduct[],
         filtersActive: false,
         cartItems: [] as IProduct[],
+        currentPage: 1,
+        totalPages: 0,
     }),
     actions: {
         async fetchProducts() {
-            const { data: response } = await api.get('/shop');
+            const { data: response } = await api.get(`/shop?page=${this.currentPage}`);
 
             this.products = response?.data as IProduct[]
             this.categories = response?.filters?.categories as ICategory[]
+
+            const meta = response?.meta
+            this.currentPage = meta?.current_page
+            this.totalPages = Math.ceil(meta?.total / meta?.per_page);
         },
 
         filterProducts({ categoryUuid, search }: FilterProductsProps) {
