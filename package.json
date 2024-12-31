@@ -12,6 +12,7 @@
     "@mdi/font": "^7.4.47",
     "axios": "^1.7.9",
     "js-cookie": "^3.0.5",
+    "lodash": "^4.17.21",
     "pinia": "^2.3.0",
     "vue": "^3.3.4",
     "vue-router": "^4.5.0",
@@ -19,6 +20,7 @@
   },
   "devDependencies": {
     "@types/js-cookie": "^3.0.6",
+    "@types/lodash": "^4.17.13",
     "@vitejs/plugin-vue": "^4.2.3",
     "typescript": "^5.0.2",
     "vite": "^4.4.5",

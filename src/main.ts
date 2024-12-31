@@ -10,9 +10,6 @@ import router from './router';
 const vuetify = createVuetify({
   components,
   directives,
-  icons: {
-    iconfont: 'mdi',
-  },
 })
 
 const pinia = createPinia();

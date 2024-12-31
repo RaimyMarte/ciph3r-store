@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import api from '../utils/api';
+import { api } from '../utils/';
 import Cookies from "js-cookie";
 
 interface LoginData {
@@ -25,14 +25,12 @@ export const useAuthStore = defineStore('auth', {
       data.append('email', email);
       data.append('password', password);
 
-      const { data: response } = await api.post('/login', data,);
+      const { data: response } = await api.post('/login', data);
 
       this.user = response?.data.user;
       const newToken = response?.data.token;
 
       Cookies.set('token', newToken, { expires: 30 });
-      api.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
-
     },
 
     async checkAuth() {
@@ -45,7 +43,6 @@ export const useAuthStore = defineStore('auth', {
       });
 
       this.user = response?.data;
-      api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     },
 
     async register({ email, name, password, confirmPassword }: RegisterData) {
@@ -55,9 +52,11 @@ export const useAuthStore = defineStore('auth', {
       data.append('password', password);
       data.append('c_password', confirmPassword);
 
-      const response = await api.post('/register', data);
-      console.log('Registration successful', response.data);
+      const { data: response } = await api.post('/register', data);
+      this.user = response?.data.user;
+      const newToken = response?.data.token;
 
+      Cookies.set('token', newToken, { expires: 30 });
     },
 
     async logout() {
@@ -66,7 +65,6 @@ export const useAuthStore = defineStore('auth', {
       this.user = null;
       this.token = null;
       Cookies.remove('token')
-      delete api.defaults.headers.common['Authorization'];
     },
   },
 });

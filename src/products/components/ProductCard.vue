@@ -20,7 +20,7 @@
     </v-card-text>
 
     <v-card-actions class="mt-auto">
-      <v-btn block color="primary" variant="elevated" :disabled="!product.stock" @click="addToCart">
+      <v-btn block color="primary" variant="elevated" :disabled="!product.stock" @click="addToCart(product.name)">
         <v-icon left>mdi-cart</v-icon>
         {{ product.stock ? 'Agregar al carrito' : 'Sin Existencia' }}
       </v-btn>
@@ -35,6 +35,7 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
 import { IProduct } from '../../interfaces/product';
+import { showToast } from '../../store/toast';
 
 export default defineComponent({
   props: {
@@ -47,9 +48,8 @@ export default defineComponent({
     formatPrice(price: string): string {
       return Number(price).toLocaleString('es-MX');
     },
-    addToCart() {
-      // Implement cart functionality
-      alert('Producto agregado al carrito');
+    addToCart(name:string) {
+      showToast(`${name} ha sido agregado al carrito`, 'success');
     },
   },
 });

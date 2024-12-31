@@ -5,7 +5,7 @@
         v-model="email"
         :rules="emailRules"
         label="Correo"
-        prepend-icon="mdi-email"
+       
         required
       ></v-text-field>
       
@@ -13,7 +13,6 @@
         v-model="password"
         :rules="passwordRules"
         label="Contraseña"
-        prepend-icon="mdi-lock"
         type="password"
         required
       ></v-text-field>
@@ -45,6 +44,7 @@ import { defineComponent, ref } from 'vue';
 import { useAuthStore } from '../../store/auth';
 import AuthLayout from '../layout/AuthLayout.vue';
 import { useRouter } from 'vue-router';
+import { showToast } from '../../store/toast';
 
 export default defineComponent({
   components: { AuthLayout },
@@ -76,8 +76,12 @@ export default defineComponent({
           email: email.value,
           password: password.value
         });
+
         router.push('/');
+        showToast('Inicio de sesión exitoso', 'success');
+        
       } catch (error) {
+        showToast('Ha ocurrio un error', 'error');
         console.error(error);
       } finally {
         loading.value = false;

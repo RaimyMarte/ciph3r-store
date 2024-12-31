@@ -7,9 +7,7 @@
     </v-row>
 
     <v-row v-if="loading">
-      <v-col cols="12">
-        <v-progress-circular indeterminate color="blue" size="64"></v-progress-circular>
-      </v-col>
+      <Loading />
     </v-row>
 
     <v-row v-else>
@@ -21,26 +19,26 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from 'vue';
+import { computed, defineComponent, onMounted, ref } from 'vue';
 import { useProductStore } from '../../store/products';
+import Loading from '../../ui/components/Loading.vue';
 import ProductCard from './ProductCard.vue';
-import { IProduct } from '../../interfaces/product';
+import { showToast } from '../../store/toast';
 
 export default defineComponent({
-  components: { ProductCard },
+  components: { Loading, ProductCard, },
   setup() {
     const productStore = useProductStore();
-    const products = ref<IProduct[]>([]);
+    const products = computed(() => productStore.filtersActive ? productStore.filteredProducts : productStore.products)
     const loading = ref(true);
 
     onMounted(async () => {
       try {
-        products.value = await productStore.fetchProducts();
-
+        await productStore.fetchProducts();
       } catch (error) {
         console.error(error);
+        showToast('Ha ocurrio un error', 'error');
       } finally {
-
         loading.value = false;
       }
     });
