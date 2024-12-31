@@ -1,5 +1,5 @@
 <template>
-    <v-container class="fill-height">
+    <v-container min-height="100vh" >
       <v-row align="center" justify="center">
         <v-col cols="12" sm="8" md="6" lg="4">
           <v-card class="elevation-12 rounded-lg">

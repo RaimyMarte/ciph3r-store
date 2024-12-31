@@ -5,7 +5,7 @@
         v-model="email"
         :rules="emailRules"
         label="Correo"
-       
+        prepend-icon="mdi-email"
         required
       ></v-text-field>
       
@@ -13,6 +13,7 @@
         v-model="password"
         :rules="passwordRules"
         label="Contraseña"
+        prepend-icon="mdi-lock"
         type="password"
         required
       ></v-text-field>

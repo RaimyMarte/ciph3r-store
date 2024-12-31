@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
-import { api } from '../utils/';
+import { api, authHeader } from '../utils/';
 import Cookies from "js-cookie";
+import { IUser } from '../interfaces/user';
 
 interface LoginData {
   email: string;
@@ -14,8 +15,13 @@ interface RegisterData {
   confirmPassword: string;
 }
 
+interface AuthState {
+  user: IUser | null,
+  token: string | null,
+}
+
 export const useAuthStore = defineStore('auth', {
-  state: () => ({
+  state: (): AuthState => ({
     user: null,
     token: null,
   }),
@@ -34,15 +40,15 @@ export const useAuthStore = defineStore('auth', {
     },
 
     async checkAuth() {
-      const token = Cookies.get('token')
-
-      const { data: response } = await api.get('/me', {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-      });
+      const { data: response } = await api.get('/me', { headers: authHeader() });
 
       this.user = response?.data;
+
+      if (!response?.success) {
+        this.user = null;
+        this.token = null;
+        Cookies.remove('token')
+      }
     },
 
     async register({ email, name, password, confirmPassword }: RegisterData) {
@@ -60,11 +66,13 @@ export const useAuthStore = defineStore('auth', {
     },
 
     async logout() {
-      await api.post('/logout');
+      const { data: response } = await api.post('/logout', {}, { headers: authHeader() });
 
-      this.user = null;
-      this.token = null;
-      Cookies.remove('token')
+      if (response?.success) {
+        this.user = null;
+        this.token = null;
+        Cookies.remove('token')
+      }
     },
   },
 });

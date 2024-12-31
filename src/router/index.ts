@@ -1,9 +1,9 @@
+import Cookies from "js-cookie";
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
-import { useAuthStore } from '../store/auth';
-import Products from '../products/pages/Products.vue';
 import Login from '../auth/pages/Login.vue';
 import Register from '../auth/pages/Register.vue';
-import { showToast } from '../store/toast';
+import Products from '../products/pages/Products.vue';
+import { useAuthStore } from '../store/auth';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -37,32 +37,39 @@ const router = createRouter({
 
 
 router.beforeEach(async (to, _from, next) => {
-  const authStore = useAuthStore();
+  const authenticated = await isAuthenticated();
 
-  try {
-    await authStore.checkAuth();
-
-    if (to.meta.guestOnly) {
-      if (authStore.user) {
-        next({ name: 'Home' });
-      } else {
-        next();
-      }
-    } else if (to.meta.requiresAuth) {
-      if (!authStore.user) {
-        next({ name: 'Login' });
-      } else {
-        next();
-      }
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if (!authenticated) {
+      next({ name: 'Login' });
     } else {
       next();
     }
-  } catch (error) {
-    showToast('Ha ocurrido un error', 'error');
-    next({ name: 'Home' });
+  } else {
+    if (to.meta.guestOnly && authenticated) {
+      next({ name: 'Home' });
+    } else {
+      next();
+    }
   }
 });
 
+
+async function isAuthenticated() {
+
+  if (Cookies.get('token') != null) {
+    try {
+      const authStore = useAuthStore();
+      await authStore.checkAuth();
+
+      return true
+    } catch (error) {
+      return false;
+    }
+  } else {
+    return false;
+  }
+}
 
 
 export default router;

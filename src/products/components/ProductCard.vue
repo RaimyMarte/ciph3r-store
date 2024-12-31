@@ -13,15 +13,15 @@
     <v-card-text>
       <p class="text-truncate mb-2">{{ product.resumen }}</p>
       <div class="d-flex align-center mb-2">
-        <v-icon color="error" icon="mdi-star"></v-icon>
+        <v-icon color="warning" icon="mdi-star"></v-icon>
         <span class="text-body-2 ml-1">{{ product.user?.rating || 'N/A' }}</span>
       </div>
-      <p class="text-h6 font-weight-bold mb-0">${{ formatPrice(product.price) }}</p>
+      <p class="text-h6 font-weight-bold mb-0">{{ formatPrice(product.price) }}</p>
     </v-card-text>
 
     <v-card-actions class="mt-auto">
-      <v-btn block color="primary" variant="elevated" :disabled="!product.stock" @click="addToCart(product.name)">
-        <v-icon left>mdi-cart</v-icon>
+      <v-btn block color="primary" variant="elevated" :disabled="!product.stock" @click="addToCart(product)">
+        <v-icon icon="mdi-cart"></v-icon>
         {{ product.stock ? 'Agregar al carrito' : 'Sin Existencia' }}
       </v-btn>
     </v-card-actions>
@@ -36,6 +36,7 @@
 import { defineComponent, PropType } from 'vue';
 import { IProduct } from '../../interfaces/product';
 import { showToast } from '../../store/toast';
+import { useProductStore } from '../../store/products';
 
 export default defineComponent({
   props: {
@@ -46,10 +47,16 @@ export default defineComponent({
   },
   methods: {
     formatPrice(price: string): string {
-      return Number(price).toLocaleString('es-MX');
+      return new Intl.NumberFormat('es-MX', {
+        style: 'currency',
+        currency: 'MXN'
+      }).format(Number(price));
     },
-    addToCart(name:string) {
-      showToast(`${name} ha sido agregado al carrito`, 'success');
+    addToCart(product: IProduct) {
+      const productStore = useProductStore()
+
+      productStore.addCartItem(product)
+      showToast(`${product?.name} ha sido agregado al carrito`, 'success');
     },
   },
 });

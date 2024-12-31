@@ -13,6 +13,7 @@ export const useProductStore = defineStore('products', {
         categories: [] as ICategory[],
         filteredProducts: [] as IProduct[],
         filtersActive: false,
+        cartItems: [] as IProduct[],
     }),
     actions: {
         async fetchProducts() {
@@ -26,7 +27,7 @@ export const useProductStore = defineStore('products', {
             let filteredProducts = [...this.products];
 
             if (!categoryUuid && !search)
-               return this.filtersActive = false
+                return this.filtersActive = false
 
             if (categoryUuid) {
                 filteredProducts = filteredProducts.filter(product =>
@@ -43,5 +44,9 @@ export const useProductStore = defineStore('products', {
             this.filteredProducts = filteredProducts;
             this.filtersActive = true
         },
-    },
+
+        addCartItem(product: IProduct) {
+            this.cartItems.push(product)
+        }
+    }
 });

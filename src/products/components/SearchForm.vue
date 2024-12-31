@@ -1,9 +1,14 @@
 <template>
   <v-form>
-    <v-text-field label="Buscar por nombre" v-model="search"></v-text-field>
-    <v-select clearable :items="categories" label="Filtrar por categoría" v-model="selectedCategory" item-title="name"
-      item-value="uuid">
-    </v-select>
+    <v-row>
+      <v-col :cols="12" :md="6">
+        <v-text-field label="Buscar por nombre" v-model="search" />
+      </v-col>
+      <v-col :cols="12" :md="6">
+        <v-select clearable :items="categories" label="Filtrar por categoría" v-model="selectedCategory"
+          item-title="name" item-value="uuid" />
+      </v-col>
+    </v-row>
   </v-form>
 </template>
 
